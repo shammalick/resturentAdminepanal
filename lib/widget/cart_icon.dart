@@ -1,43 +1,55 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:resturantadminpanel/Screen/orders_list.dart';
 import 'package:resturantadminpanel/controller/order_controller.dart';
+
+import 'order_list.dart';
 class CartIcon extends StatelessWidget {
   // final db = FirebaseFirestore.instance;
+  final orderController = Get.find<OrderController>();
   @override
   Widget build(BuildContext context) {
-    return new Stack(
-      children: <Widget>[
-    new IconButton(
-      icon: new Icon(
-        Icons.shopping_cart,
-        size: 35,
-        color: Colors.black,
-      ),
-      onPressed: () {
-        //  Get.to(AddCart());
-    
-      },
-    ),
-    new Positioned(
-      left: 15,
-        child: new Stack(
-      children: <Widget>[
-        new Icon(Icons.brightness_1, size: 25.0, color: Colors.red),
+    return Obx(
+      () {
+          if (orderController.orderdata == null) {
+        return CircularProgressIndicator();
+      } else {
+        return new Stack(
+          children: <Widget>[
+        new IconButton(
+          icon: new Icon(
+            Icons.shopping_cart,
+            size: 35,
+            color: Colors.black,
+          ),
+          onPressed: () {
+             Get.to(OrderLists());
+        
+          },
+        ),
         new Positioned(
-            top: 6,
-            right: 4,
-            child: new Center(
-              child: new Text(
-                "20",
-                style: new TextStyle(
-                    color: Colors.white,
-                    fontSize: 11.0,
-                    fontWeight: FontWeight.bold),
-              ),
-            )),
-      ],
-    )),
-      ],
+          left: 15,
+            child: new Stack(
+          children: <Widget>[
+            new Icon(Icons.brightness_1, size: 25.0, color: Colors.red),
+            new Positioned(
+                top: 6,
+                right: 10,
+                child: new Center(
+                  child: new Text(
+                    orderController.orderdata!.length.toString(),
+                    style: new TextStyle(
+                        color: Colors.white,
+                        fontSize: 11.0,
+                        fontWeight: FontWeight.bold),
+                  ),
+                )),
+          ],
+        )),
+          ],
+        );
+      }
+      }
     );
   }
 }

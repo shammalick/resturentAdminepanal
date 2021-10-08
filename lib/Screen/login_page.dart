@@ -5,6 +5,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_rx/get_rx.dart';
+import 'package:resturantadminpanel/Binding/all_binding.dart';
 import 'package:resturantadminpanel/Screen/home_page.dart';
 import 'package:resturantadminpanel/Screen/signup_page.dart';
 import 'package:resturantadminpanel/controller/auth_controller.dart';
@@ -34,7 +35,7 @@ class Login extends StatelessWidget {
       UserCredential _authResult = await _auth.signInWithEmailAndPassword(
           email: email, password: password);
       print("login ---------------------============");
-      Get.offAll(Home());
+      Get.offAll(Home(),binding: CategoryBinding());
       Get.find<UserController>().user =
           await Database().getUser(_authResult.user!.uid);
     } catch (e) {

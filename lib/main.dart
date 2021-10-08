@@ -8,6 +8,7 @@ import 'package:resturantadminpanel/new.dart';
 import 'package:resturantadminpanel/newadd.dart';
 
 import 'controller/category_controller.dart';
+import 'controller/order_controller.dart';
 import 'controller/product_Controller.dart';
 
 void main() async {
@@ -15,6 +16,7 @@ void main() async {
   await Firebase.initializeApp();
   // Get.put(ProductController());
     Get.put(CategoryController());
+      Get.put(OrderController());
   runApp(const MyApp());
 }
 
@@ -34,7 +36,7 @@ class MyApp extends StatelessWidget {
         ),
            primarySwatch: Colors.blue,
       ),
-      home: Login(),
+      home: Home(),
       // const MyHomePage(title: 'Flutter Demo Home Page'),
     );
   }

@@ -4,6 +4,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:resturantadminpanel/Model/categroy_model.dart';
+import 'package:resturantadminpanel/Model/cutomerOrder_model.dart';
 import 'package:resturantadminpanel/Model/order_model.dart';
 import 'package:resturantadminpanel/Model/product_model.dart';
 import 'package:resturantadminpanel/Model/user_model.dart';
@@ -49,9 +50,9 @@ class Database {
     String sqt,
     String image,
   ) async {
-    String docId = _firestore.collection("Resturent").doc(auth.currentUser!.uid).collection("items").doc().id;
+    String docId = _firestore.collection("Resturent").doc("MRsBaovyWkTXCLa95d2vMcymLjw1").collection("items").doc().id;
     try {
-      await _firestore.collection("Resturent").doc(auth.currentUser!.uid).collection("items").doc(docId).set({
+      await _firestore.collection("Resturent").doc("MRsBaovyWkTXCLa95d2vMcymLjw1").collection("items").doc(docId).set({
         "title": title,
         "dec": dec,
         "price": int.parse(price),
@@ -70,7 +71,7 @@ class Database {
   Future<void> updateProduct(
       String title, String dec, String price, String image, String id) async {
     try {
-      await _firestore.collection("Resturent").doc(auth.currentUser!.uid).collection("items").doc(id).update({
+      await _firestore.collection("Resturent").doc("MRsBaovyWkTXCLa95d2vMcymLjw1").collection("items").doc(id).update({
         "title": title,
         "dec": dec,
         "price": int.parse(price),
@@ -86,7 +87,7 @@ class Database {
 
   Future<void> disable(String id, bool show) async {
     try {
-      await _firestore.collection("Resturent").doc(auth.currentUser!.uid).collection("items").doc(id).update({
+      await _firestore.collection("Resturent").doc("MRsBaovyWkTXCLa95d2vMcymLjw1").collection("items").doc(id).update({
         "Show": show,
       });
     } catch (e) {
@@ -97,7 +98,7 @@ class Database {
 
   Future<void> addCategory(String name, String image) async {
     try {
-      await _firestore.collection("Resturent").doc(auth.currentUser!.uid).collection("categories").add({
+      await _firestore.collection("Resturent").doc("MRsBaovyWkTXCLa95d2vMcymLjw1").collection("categories").add({
         "name": name,
         "image": image,
       });
@@ -106,7 +107,15 @@ class Database {
           snackPosition: SnackPosition.BOTTOM);
     }
   }
-
+Future<void> doneOrder()async{
+  try{
+await _firestore.collection("Resturent").doc("MRsBaovyWkTXCLa95d2vMcymLjw1").collection("order").doc('${orderId.value}').delete();
+  }
+  catch(e){
+ Get.snackbar("Not Done", e.toString(),
+          snackPosition: SnackPosition.BOTTOM);
+  }
+}
   //  Stream<List<ProductModel>> dataFirestore() {
   //   return _firestore
   //       .collection('items')
@@ -122,7 +131,7 @@ class Database {
   Stream<List<CategoryModel>> categoryFirestore() {
     return _firestore
         .collection('Resturent')
-        .doc(auth.currentUser!.uid).collection("categories")
+        .doc("MRsBaovyWkTXCLa95d2vMcymLjw1").collection("categories")
         .snapshots()
         .map((QuerySnapshot queryData) {
       List<CategoryModel> dataList = [];
@@ -132,23 +141,36 @@ class Database {
       return dataList;
     });
   }
-//  Stream<List<OrderModel>> orderList() {
-//     return _firestore
-//         .collection('Resturent')
-//         .doc(auth.currentUser!.uid).collection("order")
-//         .snapshots()
-//         .map((QuerySnapshot queryData) {
-//       List<OrderModel> dataList = [];
-//       queryData.docs.forEach((id) {
-//         dataList.add(OrderModel.fromDocumentSnapshot(id));
-//       });
-//       return dataList;
-//     });
-//   }
+ Stream<List<OrderModel>> orderList() {
+    return _firestore
+        .collection('Resturent')
+        .doc("MRsBaovyWkTXCLa95d2vMcymLjw1").collection("order")
+        .snapshots()
+        .map((QuerySnapshot queryData) {
+      List<OrderModel> dataList = [];
+      queryData.docs.forEach((id) {
+        dataList.add(OrderModel.fromDocumentSnapshot(id));
+      });
+      return dataList;
+    });
+  }
+  Stream<List<CutomerOrderModel>> cutomerOrderList() {
+    return _firestore
+        .collection('Resturent')
+        .doc("MRsBaovyWkTXCLa95d2vMcymLjw1").collection("order").doc('${orderId.value}').collection("${orderId.value}")
+        .snapshots()
+        .map((QuerySnapshot queryData) {
+      List<CutomerOrderModel> dataList = [];
+      queryData.docs.forEach((id) {
+        dataList.add(CutomerOrderModel.fromDocumentSnapshot(id));
+      });
+      return dataList;
+    });
+  }
   Stream<List<ProductModel>> allProducts() {
     return _firestore
         .collection('Resturent')
-        .doc(auth.currentUser!.uid).collection("items")
+        .doc("MRsBaovyWkTXCLa95d2vMcymLjw1").collection("items")
         .where('category', isEqualTo: categoryName.value)
         .snapshots()
         .map((QuerySnapshot querySnapshot) {

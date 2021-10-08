@@ -5,6 +5,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_rx/get_rx.dart';
+import 'package:resturantadminpanel/Binding/all_binding.dart';
 import 'package:resturantadminpanel/Model/user_model.dart';
 import 'package:resturantadminpanel/Screen/login_page.dart';
 import 'package:resturantadminpanel/controller/auth_controller.dart';
@@ -59,7 +60,7 @@ uploadToStorage() {
         email: _authResult.user!.email!,
       );
       if (await Database().createNewUser(_user)) {
-        Get.offAll(()=>Home());
+        Get.offAll(()=>Home(),binding: CategoryBinding());
         Get.find<UserController>().user = _user;
         
       }
